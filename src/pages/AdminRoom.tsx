@@ -10,6 +10,8 @@ import { database } from '../services/firebase'
 import '../styles/room.scss'
 import { useAuth } from './../hooks/useAuth';
 
+import deleteImg from '../assets/images/delete.svg'
+
 
 type RoomParams = {
     id: string;
@@ -21,6 +23,12 @@ export function AdminRoom() {
     const roomId = params.id
  
     const  { questions, title } = useRoom(roomId)
+
+    function handleDeleteQuestion(questionId: string) {
+        if(window.confirm('Você tem certeza em quer excluir está pergunta?')) {
+            const questionRef = database.ref(`rooms/${roomId}`)
+        }
+    }
 
     return(
         <div id="page-room">
@@ -45,7 +53,14 @@ export function AdminRoom() {
                                 key={question.id}  // Forma do react diferenciar uma pergunta da outra
                                 content={question.content}
                                 author={question.author}
-                            />
+                            >
+                                <button
+                                    type='button'
+                                    onClick={() => handleDeleteQuestion(question.id)}
+                                >
+                                    <img src={deleteImg} />
+                                </button>
+                            </Question>
                         )
                     })}
                 </div>
